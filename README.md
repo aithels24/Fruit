@@ -21,7 +21,6 @@ pygame.mixer.init()
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Catch The Fruit")
 clock = pygame.time.Clock()
-fire_ball_event = pygame.USEREVENT
 
 
 #MAIN PLAYER
