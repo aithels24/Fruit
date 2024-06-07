@@ -86,6 +86,37 @@ class Fruits(pygame.sprite.Sprite):
         self.rect.y = random.randint(-100, -40)
         self.speed = 3
         
+# --------------------------------------------------------------------------------------------------------      
+
+
+class Bomb(pygame.sprite.Sprite):
+    def __init__(self):
+        super().__init__()
+        self.image = pygame.Surface((30, 30))
+        self.image.fill(BLUE)
+        self.rect = self.image.get_rect()
+        self.rect.x = random.randint(0, WIDTH - self.rect.width)
+        self.rect.y = random.randint(-100, -40)
+        self.speed = 3
+        
+        
+    def update(self):
+        self.rect.y += self.speed
+        if self.rect.top > HEIGHT:
+            self.rect.x = random.randint(0, WIDTH - self.rect.width)
+            self.y = random.randint(-100, -40)
+            self.speed = random.randint(1, 5)
+            self.reset()
+
+
+    def reset(self):
+        self.rect.x = random.randint (0, WIDTH - self.rect.width)
+        self.rect.y = random.randint(-100, -40)
+        self.speed = 3
+        
+        
+#------------------------------------------------------------------------------------------------------------
+        
         
 all_sprites = pygame.sprite.Group()
 fruits_fall = pygame.sprite.Group()
@@ -97,7 +128,10 @@ for i in range(10):
     fruit = Fruits()
     all_sprites.add(fruit)
     fruits_fall.add(fruit)
-
+for i in range(2):
+    bomb = Bomb()
+    all_sprites.add(bomb)
+    bomb_fall.add(bomb)
     
 running = True
 while running:
@@ -106,13 +140,13 @@ while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
-
-    player_hits = pygame.sprite.spritecollide(player, fruits_fall, False)
-    for hit in player_hits:
-        hit.reset()
         
         
     all_sprites.update()
+
+    for bomb in bomb_fall:
+        if pygame.sprite.collide_rect(player, bomb ): 
+            bomb.reset()
     
     for fruit in fruits_fall:
         if pygame.sprite.collide_rect(player, fruit ): 
